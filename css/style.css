@@ -1,0 +1,1038 @@
+:root {
+  --bg: #020408;
+  --surface: #080d14;
+  --surface2: #0d1520;
+  --border: rgba(0,200,255,0.12);
+  --accent: #00c8ff;
+  --accent2: #7b2fff;
+  --accent3: #ff3e6c;
+  --green: #00ff9d;
+  --text: #e2eaf5;
+  --muted: #5a7080;
+  --glow: 0 0 30px rgba(0,200,255,0.25);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ===== HOLOGRAPHIC HUD CURSOR ===== */
+/* ===== EXACT IMAGE CURSOR ===== */
+/* ===== EXACT IMAGE CURSOR WITH TILT ===== */
+#cursor {
+  width: 32px; 
+  height: 32px;
+  background-image: url('cursor.png') !important; 
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent !important; 
+  box-shadow: none !important; 
+  border-radius: 0 !important;
+  position: fixed; 
+  pointer-events: none;
+  z-index: 99999; 
+
+  /* Added -20deg rotation for a natural cursor tilt */
+  transform: translate(-50%, -50%) rotate(-30deg); 
+  
+  filter: drop-shadow(0 0 6px var(--accent)) drop-shadow(0 0 15px var(--accent));
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+#cursor-ring {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  /* HUD "Targeting" Look */
+  border-style: double;
+  border-width: 3px;
+  opacity: 0.5;
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+/* HUD Crosshair Lines */
+
+#cursor {
+  /* Slightly larger to make the arrow details visible */
+  width: 28px; 
+  height: 28px;
+  
+  /* Use your exact image */
+  background-image: url('E:\PORTFOLIO 2\cursor.png'); /* Use just 'cursor-arrow.png' if it's in the same folder as CSS, or '../cursor-arrow.png' if your CSS is in a subfolder */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  
+  /* Remove the circle styles */
+  border-radius: 0; 
+  
+  position: fixed; 
+  pointer-events: none;
+  z-index: 99999; 
+  
+  /* Center it perfectly on the mouse tip */
+  transform: translate(-50%, -50%); 
+  transition: transform 0.1s, width 0.2s, height 0.2s;
+  
+  /* Use drop-shadow so the glow hugs the arrow shape instead of a square box */
+  filter: drop-shadow(0 0 8px var(--accent)); 
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  width: 45px; height: 45px;
+  border: 2px dashed var(--accent); /* Segmented tech look */
+  border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 99998;
+  box-shadow: 0 0 15px rgba(0, 200, 255, 0.3), inset 0 0 15px rgba(0, 200, 255, 0.3);
+  /* Combined Rotate and Pulse animation */
+  animation: ringAnim 3s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+}
+
+/* Inner solid ring for extra detail */
+#cursor-ring::after {
+  content: ''; position: absolute; inset: 4px;
+  border: 1px solid rgba(0, 200, 255, 0.4); border-radius: 50%;
+}
+
+@keyframes ringAnim {
+  0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); opacity: 0.8; }
+}
+
+/* Drag Energy Trail */
+.trail-dot {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 99997;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+  opacity: 1;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+#cursor.clicking { transform: translate(-50%,-50%) scale(0.7); }
+
+/* ===== ANIMATED BACKGROUND ===== */
+#bg-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0; opacity: 0.2;
+  pointer-events: none;
+}
+#iso-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0; opacity: 4.0; /* Hidden initially */
+  pointer-events: none;
+}
+/* Aurora blobs */
+.aurora {
+  position: fixed; z-index: 0; pointer-events: none;
+  border-radius: 50%; filter: blur(80px); opacity: 0.07;
+  animation: auroraFloat 20s ease-in-out infinite;
+}
+.aurora-1 { width: 600px; height: 600px; background: radial-gradient(circle, #00c8ff, transparent); top: -200px; left: -200px; animation-duration: 25s; }
+.aurora-2 { width: 500px; height: 500px; background: radial-gradient(circle, #7b2fff, transparent); bottom: -100px; right: -100px; animation-duration: 30s; animation-delay: -10s; }
+.aurora-3 { width: 400px; height: 400px; background: radial-gradient(circle, #00ff9d, transparent); top: 50%; left: 50%; animation-duration: 20s; animation-delay: -5s; opacity: 0.04; }
+.aurora-4 { width: 700px; height: 300px; background: radial-gradient(ellipse, #ff3e6c, transparent); top: 30%; right: -200px; animation-duration: 35s; animation-delay: -15s; opacity: 0.05; }
+@keyframes auroraFloat {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  25% { transform: translate(80px, 60px) scale(1.1); }
+  50% { transform: translate(-40px, 100px) scale(0.9); }
+  75% { transform: translate(60px, -40px) scale(1.05); }
+}
+/* Grid overlay */
+.grid-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,200,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 3rem;
+  background: rgba(2,4,8,0.75);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s;
+}
+nav.scrolled {
+  background: rgba(2,4,8,0.95);
+  box-shadow: 0 4px 30px rgba(0,200,255,0.08);
+}
+.nav-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 1rem; font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-decoration: none;
+  position: relative;
+}
+.nav-logo span { color: var(--accent3); }
+.nav-logo::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.nav-logo:hover::after { transform: scaleX(1); }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem; color: var(--muted);
+  text-decoration: none; letter-spacing: 1px;
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::before {
+  content: './'; color: var(--accent); opacity: 0;
+  transition: opacity 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::before { opacity: 1; }
+/* Active nav indicator */
+.nav-links a.active { color: var(--accent); }
+.nav-links a.active::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+  background: var(--accent);
+}
+
+/* Resume button in nav */
+.btn-resume-nav {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.5rem 1.2rem;
+  background: transparent; color: var(--accent);
+  border: 1px solid var(--accent); cursor: pointer;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.btn-resume-nav::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--accent);
+  transform: translateX(-110%); transition: transform 0.3s ease;
+}
+.btn-resume-nav:hover { color: #000; }
+.btn-resume-nav:hover::before { transform: translateX(0); }
+.btn-resume-nav span { position: relative; z-index: 1; }
+
+/* ===== SECTIONS ===== */
+section { position: relative; z-index: 1; }
+
+/* ===== HERO ===== */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 6rem 6rem 4rem;
+  gap: 4rem;
+}
+.hero-left { display: flex; flex-direction: column; gap: 1.5rem; }
+.hero-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem; color: var(--green);
+  letter-spacing: 3px; text-transform: uppercase;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.hero-tag::before {
+  content: ''; width: 2rem; height: 1px;
+  background: var(--green); display: block;
+}
+.hero-name {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800; line-height: 1.05;
+  letter-spacing: -1px;
+}
+.hero-name .line1 { color: var(--text); }
+.hero-name .line2 {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-desc {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem; color: var(--muted);
+  line-height: 1.8; max-width: 480px;
+}
+.hero-desc .hl { color: var(--accent); }
+.hero-stats { display: flex; gap: 2rem; flex-wrap: wrap; }
+.stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
+.stat-num {
+  font-size: 1.8rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--green));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.stat-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 2px;
+}
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.8rem 2rem;
+  background: var(--accent); color: #000;
+  border: none; cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: all 0.2s; text-decoration: none; display: inline-block;
+  font-weight: 700; position: relative; overflow: hidden;
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0.2);
+  transform: translateX(-100%) skewX(-15deg);
+  transition: transform 0.4s;
+}
+.btn-primary:hover { background: var(--green); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,255,157,0.3); }
+.btn-primary:hover::after { transform: translateX(100%) skewX(-15deg); }
+.btn-outline {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.8rem 2rem;
+  background: transparent; color: var(--accent);
+  border: 1px solid var(--accent); cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: all 0.2s; text-decoration: none; display: inline-block;
+}
+.btn-outline:hover { background: rgba(0,200,255,0.1); transform: translateY(-2px); }
+
+/* ===== RESUME BUTTON — UNIQUE ANIMATION ===== */
+.btn-resume-hero {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.8rem 2rem;
+  background: transparent; color: var(--accent3);
+  border: 1px solid var(--accent3); cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+  position: relative; overflow: hidden;
+}
+.btn-resume-hero .resume-icon {
+  display: inline-flex; align-items: center;
+  transition: transform 0.3s;
+}
+.btn-resume-hero:hover { background: rgba(255,62,108,0.1); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,62,108,0.2); }
+.btn-resume-hero:hover .resume-icon { transform: translateY(-2px) scale(1.2); }
+
+/* ===== RESUME OVERLAY ===== */
+#resume-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 50000;
+  background: rgba(2,4,8,0.95); backdrop-filter: blur(10px);
+  align-items: center; justify-content: center;
+  padding: 2rem;
+}
+#resume-overlay.open { display: flex; animation: overlayIn 0.4s ease forwards; }
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.resume-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  max-width: 780px; width: 100%; max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: resumeUnfold 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: top center;
+}
+@keyframes resumeUnfold {
+  from { opacity: 0; transform: scaleY(0.1) translateY(-40px); clip-path: inset(0 0 95% 0); }
+  to { opacity: 1; transform: scaleY(1) translateY(0); clip-path: inset(0 0 0% 0); }
+}
+.resume-modal-header {
+  position: sticky; top: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.2rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  z-index: 1;
+}
+.resume-modal-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem; letter-spacing: 3px; color: var(--accent);
+  text-transform: uppercase;
+}
+.resume-close-btn {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem; color: var(--muted); cursor: pointer;
+  background: none; border: 1px solid var(--border); padding: 0.3rem 0.8rem;
+  transition: all 0.2s; letter-spacing: 1px;
+}
+.resume-close-btn:hover { color: var(--accent3); border-color: var(--accent3); }
+.resume-body {
+  padding: 2.5rem;
+}
+
+/* Resume card content */
+.resume-header-block {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 1.5rem; margin-bottom: 2rem;
+}
+.resume-name {
+  font-size: 2rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 0.3rem;
+}
+.resume-subtitle {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem; color: var(--accent); letter-spacing: 2px;
+  margin-bottom: 0.8rem;
+}
+.resume-contact-row {
+  display: flex; flex-wrap: wrap; gap: 0.8rem;
+}
+.resume-contact-item {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.68rem; color: var(--muted);
+  display: flex; align-items: center; gap: 0.3rem;
+}
+.resume-section {
+  margin-bottom: 2rem;
+}
+.resume-section-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 4px; color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.resume-section-title::before {
+  content: '//'; color: var(--muted);
+}
+.resume-entry {
+  margin-bottom: 1.2rem;
+}
+.resume-entry-header {
+  display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+.resume-entry-title {
+  font-size: 0.9rem; font-weight: 700; color: var(--text);
+}
+.resume-entry-period {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem; color: var(--accent2);
+  background: rgba(123,47,255,0.1); padding: 0.15rem 0.5rem;
+  border: 1px solid rgba(123,47,255,0.3);
+}
+.resume-entry-sub {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem; color: var(--accent); margin-bottom: 0.5rem;
+}
+.resume-entry ul {
+  list-style: none; display: flex; flex-direction: column; gap: 0.3rem;
+}
+.resume-entry li {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem; color: var(--muted);
+  padding-left: 1rem; position: relative; line-height: 1.6;
+}
+.resume-entry li::before {
+  content: '▸'; position: absolute; left: 0; color: var(--accent);
+}
+.resume-skills-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+}
+.resume-skill-row {
+  font-family: 'Fira Code', monospace; font-size: 0.7rem;
+  display: flex; gap: 0.3rem; align-items: flex-start;
+}
+.resume-skill-cat { color: var(--accent); flex-shrink: 0; }
+.resume-skill-val { color: var(--muted); }
+.resume-cert-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+}
+.resume-cert-item {
+  font-family: 'Fira Code', monospace; font-size: 0.7rem;
+  color: var(--muted); display: flex; align-items: center; gap: 0.5rem;
+}
+.resume-cert-item::before { content: '◆'; color: var(--green); font-size: 0.5rem; }
+.resume-download-bar {
+  display: flex; gap: 1rem; padding: 1rem 2rem;
+  border-top: 1px solid var(--border);
+  background: rgba(0,200,255,0.03);
+  justify-content: flex-end;
+}
+.btn-download {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.6rem 1.5rem;
+  background: var(--accent); color: #000; font-weight: 700;
+  border: none; cursor: pointer;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  transition: all 0.2s;
+}
+.btn-download:hover { background: var(--green); transform: translateY(-2px); }
+
+/* ===== HERO RIGHT ===== */
+.hero-right {
+  display: flex; justify-content: center; align-items: center;
+  position: relative;
+}
+.photo-frame {
+  position: relative; width: 360px; height: 440px;
+}
+.photo-border-outer {
+  position: absolute; inset: -2px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+  clip-path: polygon(20px 0%, 100% 0%, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0% 100%, 0% 20px);
+  animation: borderRotate 4s linear infinite;
+}
+@keyframes borderRotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+.photo-bg {
+  position: absolute; inset: 2px;
+  background: var(--surface2);
+  clip-path: polygon(20px 0%, 100% 0%, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0% 100%, 0% 20px);
+  overflow: hidden;
+}
+.photo-bg img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  opacity: 0.9; filter: contrast(1.1) saturate(0.8);
+}
+.photo-overlay {
+  position: absolute; inset: 2px;
+  background: linear-gradient(to top, rgba(2,4,8,0.8) 0%, transparent 50%);
+  clip-path: polygon(20px 0%, 100% 0%, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0% 100%, 0% 20px);
+}
+.photo-corner {
+  position: absolute; width: 20px; height: 20px;
+  border-color: var(--accent); border-style: solid;
+}
+.photo-corner.tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.photo-corner.tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+.photo-corner.bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+.photo-corner.br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+.photo-label {
+  position: absolute; bottom: 20px; left: 0; right: 0;
+  text-align: center; z-index: 2;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; color: var(--accent); letter-spacing: 2px;
+}
+.scan-line {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 1.9; animation: scan 3s linear infinite;
+  pointer-events: none;
+}
+@keyframes scan {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+.floating-badge {
+  position: absolute;
+  background: rgba(8,13,20,0.9); border: 1px solid var(--border);
+  padding: 0.5rem 0.8rem; backdrop-filter: blur(10px);
+  font-family: 'Fira Code', monospace; font-size: 0.65rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: default;
+}
+.floating-badge:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 0 20px rgba(0,200,255,0.2);
+}
+.badge-cgpa { top: 20px; right: -60px; color: var(--green); border-color: var(--green); animation: badgeFloat 3s ease-in-out infinite; }
+.badge-role { bottom: 60px; left: -70px; color: var(--accent2); border-color: var(--accent2); animation: badgeFloat 3.5s ease-in-out infinite 0.5s; }
+.badge-loc { top: 50%; right: -80px; color: var(--accent3); border-color: var(--accent3); animation: badgeFloat 4s ease-in-out infinite 1s; }
+@keyframes badgeFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ===== SECTION COMMON ===== */
+.section-wrap { padding: 6rem 6rem; }
+.section-header { margin-bottom: 3rem; }
+.section-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem; color: var(--accent);
+  letter-spacing: 4px; text-transform: uppercase;
+  margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.section-tag::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  max-width: 200px;
+}
+.section-title {
+  font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 800;
+  line-height: 1.1;
+}
+
+/* ===== ABOUT / SKILLS ===== */
+#about { background: transparent }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  align-items: start;
+}
+.about-text p {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.82rem; color: var(--muted);
+  line-height: 1.9; margin-bottom: 1rem;
+}
+.about-text p span { color: var(--accent); }
+.skills-grid { display: flex; flex-direction: column; gap: 1rem; }
+.skill-row { display: flex; flex-direction: column; gap: 0.4rem; }
+.skill-header {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.skill-name {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem; color: var(--text);
+}
+.skill-pct {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem; color: var(--accent);
+}
+.skill-bar {
+  height: 3px; background: rgba(255,255,255,0.06);
+  position: relative; overflow: visible;
+}
+.skill-fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent));
+  width: 0; position: relative; transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 8px var(--accent);
+}
+.skill-fill::after {
+  content: ''; position: absolute; right: 0; top: 50%;
+  transform: translateY(-50%); width: 6px; height: 6px;
+  background: var(--accent); border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+.tech-cloud {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;
+}
+.tech-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem; padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border);
+  color: var(--muted); letter-spacing: 1px;
+  transition: all 0.2s; cursor: default;
+  position: relative; overflow: hidden;
+}
+.tech-tag::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(0,200,255,0.05);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.2s;
+}
+.tech-tag:hover {
+  border-color: var(--accent); color: var(--accent);
+}
+.tech-tag:hover::before { transform: scaleX(1); }
+
+/* ===== EXPERIENCE ===== */
+#experience { background: transparent; }
+.exp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 2rem 2.5rem;
+  position: relative; overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.exp-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+}
+.exp-card:hover {
+  border-color: rgba(0,200,255,0.4);
+  transform: translateX(4px);
+  box-shadow: -4px 0 20px rgba(0,200,255,0.1);
+}
+.exp-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;
+}
+.exp-role { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.exp-period {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem; color: var(--accent);
+  background: rgba(0,200,255,0.08); padding: 0.2rem 0.6rem;
+  border: 1px solid rgba(0,200,255,0.2);
+}
+.exp-company {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem; color: var(--accent2);
+  margin-bottom: 1rem;
+}
+.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.exp-bullets li {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem; color: var(--muted);
+  padding-left: 1.2rem; position: relative; line-height: 1.7;
+}
+.exp-bullets li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: var(--accent);
+}
+
+/* ===== PROJECTS ===== */
+#projects { background: transparent; }
+.projects-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+.project-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 1.8rem;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0,200,255,0.4);
+  box-shadow: var(--glow), 0 20px 40px rgba(0,0,0,0.3);
+}
+.project-card::after {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.project-card:hover::after { transform: scaleX(1); }
+/* Corner accent */
+.project-card::before {
+  content: ''; position: absolute;
+  bottom: 0; right: 0; width: 0; height: 0;
+  border-style: solid; border-width: 0 0 30px 30px;
+  border-color: transparent transparent rgba(0,200,255,0.1) transparent;
+  transition: border-width 0.3s;
+}
+.project-card:hover::before { border-width: 0 0 50px 50px; }
+.project-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 2rem; font-weight: 700; color: rgba(0,200,255,0.1);
+  line-height: 1; position: absolute; top: 1rem; right: 1.5rem;
+}
+.project-title { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.project-desc {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem; color: var(--muted); line-height: 1.7;
+}
+.project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pt {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.6rem; padding: 0.2rem 0.5rem;
+  background: rgba(123,47,255,0.15); color: var(--accent2);
+  border: 1px solid rgba(123,47,255,0.3);
+  transition: all 0.2s;
+}
+.pt:hover {
+  background: rgba(123,47,255,0.3); color: #fff;
+}
+.project-links { display: flex; gap: 0.8rem; margin-top: auto; }
+.plink {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem; color: var(--accent);
+  text-decoration: none; display: flex; align-items: center; gap: 0.3rem;
+  transition: color 0.2s, gap 0.2s;
+}
+.plink:hover { color: var(--green); gap: 0.5rem; }
+
+/* ===== GITHUB REPOS ===== */
+#github { background: transparent; }
+.repos-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+.repo-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  transition: all 0.3s;
+  text-decoration: none; display: block;
+  position: relative; overflow: hidden;
+}
+.repo-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(0,255,157,0.06), transparent 70%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.repo-card:hover {
+  border-color: rgba(0,255,157,0.4);
+  box-shadow: 0 0 20px rgba(0,255,157,0.08);
+  transform: translateY(-3px);
+}
+.repo-card:hover::after { opacity: 1; }
+.repo-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem; font-weight: 700; color: var(--green);
+  margin-bottom: 0.5rem;
+}
+.repo-desc {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem; color: var(--muted); line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.repo-meta { display: flex; gap: 1rem; align-items: center; }
+.repo-lang {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem; color: var(--accent);
+  display: flex; align-items: center; gap: 0.3rem;
+}
+.repo-lang::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ===== CERTIFICATIONS ===== */
+#certs { background: transparent; }
+.certs-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.cert-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 1.5rem; position: relative;
+  overflow: hidden; transition: all 0.3s;
+  cursor: default;
+}
+.cert-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0); transition: transform 0.3s;
+}
+.cert-card:hover {
+  border-color: rgba(0,200,255,0.4);
+  box-shadow: 0 0 20px rgba(0,200,255,0.1);
+  transform: translateY(-3px);
+}
+.cert-card:hover::before { transform: scaleX(1); }
+.cert-logo { font-size: 2rem; margin-bottom: 0.8rem; }
+.cert-name { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.3rem; }
+.cert-org { font-family: 'Fira Code', monospace; font-size: 0.7rem; color: var(--accent); }
+.cert-year { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-top: 0.5rem; }
+/* Verified badge */
+.cert-badge {
+  position: absolute; top: 1rem; right: 1rem;
+  font-family: 'Fira Code', monospace; font-size: 0.55rem;
+  color: var(--green); border: 1px solid var(--green);
+  padding: 0.1rem 0.4rem; letter-spacing: 1px;
+}
+
+/* ===== EDUCATION ===== */
+#education { background: transparent; }
+.edu-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 2.5rem; position: relative; overflow: hidden;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 2rem; align-items: start;
+  transition: border-color 0.3s;
+}
+.edu-card:hover { border-color: rgba(0,200,255,0.3); }
+.edu-card::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+}
+.edu-inst { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; }
+.edu-degree { font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--accent); margin-bottom: 0.5rem; }
+.edu-duration { font-family: 'Fira Code', monospace; font-size: 0.7rem; color: var(--muted); }
+.edu-cgpa {
+  font-size: 3rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--green));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: right; line-height: 1;
+}
+.edu-cgpa-label { font-family: 'Fira Code', monospace; font-size: 0.65rem; color: var(--muted); text-align: right; }
+.coursework { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+.course {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem; padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border); color: var(--muted);
+  transition: all 0.2s;
+}
+.course:hover { color: var(--accent2); border-color: var(--accent2); }
+
+/* ===== CONTACT ===== */
+#contact { background: transparent; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+.contact-links { display: flex; flex-direction: column; gap: 1rem; }
+.contact-item {
+  display: flex; align-items: center; gap: 1rem;
+  text-decoration: none; padding: 1rem 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  transition: all 0.25s;
+  position: relative; overflow: hidden;
+}
+.contact-item::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+  transform: scaleY(0); transition: transform 0.3s;
+  transform-origin: bottom;
+}
+.contact-item:hover {
+  border-color: var(--accent);
+  background: rgba(0,200,255,0.04);
+  transform: translateX(6px);
+}
+.contact-item:hover::before { transform: scaleY(1); }
+.contact-icon { font-size: 1.2rem; width: 2rem; text-align: center; }
+.contact-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem; color: var(--muted); margin-bottom: 0.15rem;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.contact-value { font-size: 0.85rem; color: var(--text); }
+.contact-cta { display: flex; flex-direction: column; gap: 1.5rem; justify-content: center; }
+.cta-text { font-family: 'Fira Code', monospace; font-size: 0.82rem; color: var(--muted); line-height: 1.8; }
+.cta-text span { color: var(--accent); }
+
+/* ===== TOOLTIP ===== */
+[data-tooltip] { position: relative; }
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--muted); font-family: 'Fira Code', monospace;
+  font-size: 0.6rem; letter-spacing: 1px; padding: 0.3rem 0.6rem;
+  white-space: nowrap; pointer-events: none;
+  opacity: 0; transition: opacity 0.2s;
+  z-index: 100;
+}
+[data-tooltip]:hover::after { opacity: 1; }
+
+/* ===== SCROLL PROGRESS ===== */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 9999;
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* ===== BACK TO TOP ===== */
+#back-to-top {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 1000;
+  width: 44px; height: 44px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--accent); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: all 0.3s; opacity: 0; pointer-events: none;
+  font-family: 'Space Mono', monospace;
+}
+#back-to-top.visible { opacity: 1; pointer-events: all; }
+#back-to-top:hover {
+  background: var(--accent); color: #000;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,200,255,0.3);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 2rem 6rem;
+  display: flex; justify-content: space-between; align-items: center;
+  position: relative; z-index: 1;
+}
+.footer-text { font-family: 'Fira Code', monospace; font-size: 0.7rem; color: var(--muted); }
+.footer-text span { color: var(--accent); }
+.footer-status {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: 'Fira Code', monospace; font-size: 0.7rem; color: var(--green);
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ===== SCROLL ANIMATIONS ===== */
+.fade-up {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== GLITCH ===== */
+.glitch { position: relative; display: inline-block; }
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute; top: 0; left: 0;
+  background: var(--bg);
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+.glitch::before { color: var(--accent); left: 2px; animation: glitch1 3s infinite; }
+.glitch::after { color: var(--accent3); left: -2px; clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); animation: glitch2 3s infinite; }
+@keyframes glitch1 {
+  0%, 90%, 100% { transform: translateX(0); opacity: 0; }
+  92% { transform: translateX(2px); opacity: 0.8; }
+  94% { transform: translateX(-2px); opacity: 0.8; }
+  96% { transform: translateX(2px); opacity: 0; }
+}
+@keyframes glitch2 {
+  0%, 88%, 100% { transform: translateX(0); opacity: 0; }
+  90% { transform: translateX(-2px); opacity: 0.8; }
+  92% { transform: translateX(2px); opacity: 0.8; }
+  94% { transform: translateX(-2px); opacity: 0; }
+}
+
+/* ===== TYPEWRITER ===== */
+.typewriter { border-right: 2px solid var(--accent); white-space: nowrap; overflow: hidden; }
+
+@media (max-width: 900px) {
+  #hero { grid-template-columns: 1fr; padding: 5rem 2rem 3rem; text-align: center; }
+  .hero-right { display: none; }
+  .section-wrap { padding: 4rem 2rem; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1rem; }
+  .btn-resume-nav { display: none; }
+  footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  .edu-card { grid-template-columns: 1fr; }
+  .resume-skills-grid { grid-template-columns: 1fr; }
+  .resume-cert-grid { grid-template-columns: 1fr; }
+  .hero-ctas { justify-content: center; }
+}

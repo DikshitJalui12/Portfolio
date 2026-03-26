@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dikshit Kumar Jalui — AI/ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div id="scroll-progress" style="width:0%"></div>
+
+<canvas id="bg-canvas"></canvas>
+<canvas id="iso-canvas"></canvas>
+<div class="grid-overlay"></div>
+<div class="aurora aurora-1"></div>
+<div class="aurora aurora-2"></div>
+<div class="aurora aurora-3"></div>
+<div class="aurora aurora-4"></div>
+
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<div id="resume-overlay">
+  <div class="resume-modal">
+    <div class="resume-modal-header">
+      <div class="resume-modal-title">// resume_dikshit_jalui.pdf</div>
+      <button class="resume-close-btn" onclick="closeResume()">[ close ]</button>
+    </div>
+    <div class="resume-body">
+      <div class="resume-header-block">
+        <div class="resume-name">Dikshit Kumar Jalui</div>
+        <div class="resume-subtitle">AI/ML Engineer · Design Co-Head · Full-Stack Builder</div>
+        <div class="resume-contact-row">
+          <span class="resume-contact-item">📧 dikshitjalui03@gmail.com</span>
+          <span class="resume-contact-item">📱 +91-7416231423</span>
+          <span class="resume-contact-item">💼 linkedin.com/in/dikshit-kumarjalui</span>
+          <span class="resume-contact-item">⌨ github.com/DikshitJalui12</span>
+          <span class="resume-contact-item">📍 Hyderabad, Telangana, India</span>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title">Education</div>
+        <div class="resume-entry">
+          <div class="resume-entry-header">
+            <div class="resume-entry-title">Institute of Aeronautical Engineering</div>
+            <div class="resume-entry-period">Sep 2024 – Jul 2028</div>
+          </div>
+          <div class="resume-entry-sub">B.Tech in Artificial Intelligence &amp; Machine Learning · CGPA: 9.03/10</div>
+          <ul>
+            <li>Relevant Coursework: Data Structures &amp; Algorithms, Machine Learning, NLP, DBMS, Software Engineering, Web Systems Engineering</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title">Experience</div>
+        <div class="resume-entry">
+          <div class="resume-entry-header">
+            <div class="resume-entry-title">Design Co-Head</div>
+            <div class="resume-entry-period">Mar 2025 – Present</div>
+          </div>
+          <div class="resume-entry-sub">ACM × IARE Student Chapter · Hyderabad, India</div>
+          <ul>
+            <li>Lead design strategy and creative direction for ACM chapter events reaching 100+ students</li>
+            <li>Manage a team of 5+ designers to deliver visual content for workshops and hackathons</li>
+            <li>Collaborate with technical teams to create user-centric designs for web applications</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title">Projects</div>
+        <div class="resume-entry">
+          <div class="resume-entry-header">
+            <div class="resume-entry-title">Sentry RAG Application</div>
+            <div class="resume-entry-period">Dec 2024</div>
+          </div>
+          <div class="resume-entry-sub">Base44 · RAG · AI · Vector DB · React · JavaScript</div>
+          <ul>
+            <li>Built intelligent document search system using Retrieval-Augmented Generation for enhanced query responses</li>
+            <li>Deployed full-stack application on Base44 platform with real-time data retrieval and NLP</li>
+          </ul>
+        </div>
+        <div class="resume-entry">
+          <div class="resume-entry-header">
+            <div class="resume-entry-title">AI-Powered Image Recognition System</div>
+            <div class="resume-entry-period">Jan 2025</div>
+          </div>
+          <div class="resume-entry-sub">Python · TensorFlow · OpenCV · Flask · ResNet</div>
+          <ul>
+            <li>Built CNN achieving 94% accuracy on image classification with 10,000+ images using ResNet architecture</li>
+            <li>Deployed web-based interface using Flask for real-time image prediction and analysis</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title">Technical Skills</div>
+        <div class="resume-skills-grid">
+          <div class="resume-skill-row"><span class="resume-skill-cat">Languages:&nbsp;</span><span class="resume-skill-val">Python, C, Java, JavaScript, SQL</span></div>
+          <div class="resume-skill-row"><span class="resume-skill-cat">ML/AI:&nbsp;</span><span class="resume-skill-val">TensorFlow, PyTorch, Keras, HuggingFace, OpenCV</span></div>
+          <div class="resume-skill-row"><span class="resume-skill-cat">Web Dev:&nbsp;</span><span class="resume-skill-val">Node.js, FastAPI, Flask, Django, GraphQL</span></div>
+          <div class="resume-skill-row"><span class="resume-skill-cat">Databases:&nbsp;</span><span class="resume-skill-val">MySQL, MongoDB</span></div>
+          <div class="resume-skill-row"><span class="resume-skill-cat">Cloud/DevOps:&nbsp;</span><span class="resume-skill-val">AWS (EC2, S3, Lambda), Docker, Kubernetes, Git</span></div>
+          <div class="resume-skill-row"><span class="resume-skill-cat">Tools:&nbsp;</span><span class="resume-skill-val">Jupyter, VS Code, Adobe Creative Suite</span></div>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title">Certifications &amp; Achievements</div>
+        <div class="resume-cert-grid">
+          <div class="resume-cert-item">AWS Cloud Practitioner Essentials — Amazon Web Services, 2025</div>
+          <div class="resume-cert-item">Oracle Cloud Infrastructure Foundations — Oracle, 2025</div>
+          <div class="resume-cert-item">Software Engineering Virtual Experience — JP Morgan Chase, 2025</div>
+          <div class="resume-cert-item">Java &amp; Python Certification — Coincent, 2024</div>
+        </div>
+      </div>
+    </div>
+    <div class="resume-download-bar">
+      <a href="#contact" onclick="closeResume()" class="btn-download" style="text-decoration:none">✉ Contact Me</a>
+      
+      <a href="E:\PORTFOLIO 2\dikshit-portfolio\Dikshit_Resume.pdf.pdf" download="Dikshit_Jalui_Resume.pdf" class="btn-download" style="text-decoration:none; display:flex; align-items:center;">⎙ Download PDF</a>
+    </div>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">DKJ<span>.</span>dev</a>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#experience">exp</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#github">github</a></li>
+    <li><a href="#education">education</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+  <button class="btn-resume-nav" onclick="openResume()"><span>⎙ Resume</span></button>
+</nav>
+
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">AI/ML Engineer · Designer · Builder</div>
+    <div class="hero-name">
+      <div class="line1 glitch" data-text="DIKSHIT">DIKSHIT</div>
+      <div class="line2">KUMAR JALUI</div>
+    </div>
+    <div class="hero-desc">
+      B.Tech student @ <span class="hl">IARE Hyderabad</span> specializing in<br>
+      <span class="hl">Artificial Intelligence &amp; Machine Learning</span>.<br>
+      Building intelligent systems at the intersection of<br>
+      <span class="hl">RAG · CNNs · Full-Stack · Design</span>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item" data-tooltip="Till Semester III">
+        <div class="stat-num">9.03</div>
+        <div class="stat-label">CGPA / 10</div>
+      </div>
+      <div class="stat-item" data-tooltip="AWS, Oracle, JPMC, Coincent">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Certifications</div>
+      </div>
+      <div class="stat-item" data-tooltip="ACM × IARE Chapter">
+        <div class="stat-num">100+</div>
+        <div class="stat-label">Students Led</div>
+      </div>
+    </div>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Get In Touch</a>
+      <a href="#projects" class="btn-outline">View Projects</a>
+      <button class="btn-resume-hero" onclick="openResume()">
+        <span class="resume-icon">⎙</span>
+        View Resume
+      </button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="photo-frame">
+      <div class="photo-border-outer"></div>
+      <div class="photo-bg">
+        <img src="IMG-20260314-WA0021.jpg" alt="Dikshit Kumar Jalui">
+      </div>
+      <div class="photo-overlay"></div>
+      <div class="scan-line"></div>
+      <div class="photo-corner tl"></div>
+      <div class="photo-corner tr"></div>
+      <div class="photo-corner bl"></div>
+      <div class="photo-corner br"></div>
+      <div class="photo-label">DIKSHIT KUMAR JALUI // IARE 2028</div>
+    </div>
+    <div class="floating-badge badge-cgpa" data-tooltip="Academic performance">◆ CGPA 9.03/10</div>
+    <div class="floating-badge badge-role" data-tooltip="Current role">◆ ACM Design Co-Head</div>
+    <div class="floating-badge badge-loc" data-tooltip="Based in">◆ Hyderabad, IN</div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-header fade-up">
+      <div class="section-tag">01 // About</div>
+      <h2 class="section-title">Building the Future<br>with Intelligence</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text fade-up">
+        <p>I'm a <span>first-year B.Tech student</span> at the Institute of Aeronautical Engineering, Hyderabad, pursuing Artificial Intelligence &amp; Machine Learning with a CGPA of <span>9.03/10</span>.</p>
+        <p>As <span>Design Co-Head at ACM × IARE</span>, I bridge the gap between technical depth and visual communication — leading a team of 5+ designers to craft experiences for workshops, hackathons, and platforms reaching <span>100+ students</span>.</p>
+        <p>I build systems that think — from <span>RAG-powered document intelligence</span> to <span>CNN image classifiers</span> achieving 94% accuracy. My stack spans the full AI lifecycle: data, modeling, deployment, and interface design.</p>
+        <div class="tech-cloud">
+          <span class="tech-tag" data-tooltip="Primary language">Python</span>
+          <span class="tech-tag" data-tooltip="Deep learning">TensorFlow</span>
+          <span class="tech-tag" data-tooltip="Deep learning">PyTorch</span>
+          <span class="tech-tag" data-tooltip="Frontend">React</span>
+          <span class="tech-tag" data-tooltip="Backend API">FastAPI</span>
+          <span class="tech-tag" data-tooltip="Containerization">Docker</span>
+          <span class="tech-tag" data-tooltip="Cloud platform">AWS</span>
+          <span class="tech-tag" data-tooltip="LLM chains">LangChain</span>
+          <span class="tech-tag" data-tooltip="Computer vision">OpenCV</span>
+          <span class="tech-tag" data-tooltip="Transformers">HuggingFace</span>
+          <span class="tech-tag" data-tooltip="NoSQL database">MongoDB</span>
+          <span class="tech-tag" data-tooltip="Orchestration">Kubernetes</span>
+        </div>
+      </div>
+      <div class="skills-grid fade-up">
+        <div class="skill-row">
+          <div class="skill-header">
+            <span class="skill-name">Python / AI Development</span>
+            <span class="skill-pct">62%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="62"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-header">
+            <span class="skill-name">Machine Learning / Deep Learning</span>
+            <span class="skill-pct">25%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="25"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-header">
+            <span class="skill-name">Web Development (Node / Flask)</span>
+            <span class="skill-pct">80%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-header">
+            <span class="skill-name">Cloud &amp; DevOps (AWS / Docker)</span>
+            <span class="skill-pct">15%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="15"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-header">
+            <span class="skill-name">UI/UX &amp; Design Systems</span>
+            <span class="skill-pct">02%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="02"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-header">
+            <span class="skill-name">Java / C / SQL</span>
+            <span class="skill-pct">45%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="45"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-header">
+            <span class="skill-name">NLP / LLM / RAG Systems</span>
+            <span class="skill-pct">50%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="50"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-header fade-up">
+      <div class="section-tag">02 // Experience</div>
+      <h2 class="section-title">Where I've<br>Made Impact</h2>
+    </div>
+    <div class="fade-up">
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-role">Design Co-Head</div>
+          <div class="exp-period">Mar 2025 — Present</div>
+        </div>
+        <div class="exp-company">ACM × IARE Student Chapter · Hyderabad, India</div>
+        <ul class="exp-bullets">
+          <li>Lead design strategy and creative direction for ACM chapter events, workshops, and promotional materials reaching <strong style="color:var(--text)">100+ students</strong></li>
+          <li>Manage a team of <strong style="color:var(--text)">5+ designers</strong> to deliver high-quality visual content for technical workshops and hackathons</li>
+          <li>Collaborate with technical teams to create user-centric designs for web applications and event platforms</li>
+        </ul>
+      </div>
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-role">JP Morgan Software Engineering Virtual Experience</div>
+          <div class="exp-period">2025</div>
+        </div>
+        <div class="exp-company">JPMorgan Chase &amp; Co. · Forage Program</div>
+        <ul class="exp-bullets">
+          <li>Completed advanced software engineering simulation covering real-world financial systems</li>
+          <li>Worked with the Forage MIDAS project — Java-based repo simulating JPMC engineering workflows</li>
+          <li>Practiced industry-level code review, data interfaces, and system design patterns</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-header fade-up">
+      <div class="section-tag">03 // Projects</div>
+      <h2 class="section-title">Things I've<br>Actually Built</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card fade-up">
+        <div class="project-num">01</div>
+        <div class="project-title">Sentry RAG Application</div>
+        <div class="project-desc">Intelligent document search system using Retrieval-Augmented Generation (RAG) for enhanced query responses. A dual-source LLM assistant for unmasking covert threats in real-time. Full-stack deployed on Base44 platform.</div>
+        <div class="project-tech">
+          <span class="pt">RAG</span><span class="pt">LLM</span>
+          <span class="pt">Vector DB</span><span class="pt">React</span>
+          <span class="pt">Base44</span><span class="pt">JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/DikshitJalui12/Sentry-RAG" class="plink" target="_blank">⧉ GitHub →</a>
+        </div>
+      </div>
+      <div class="project-card fade-up">
+        <div class="project-num">02</div>
+        <div class="project-title">AI-Powered Image Recognition System</div>
+        <div class="project-desc">Built a Convolutional Neural Network achieving <strong style="color:var(--accent)">94% accuracy</strong> on image classification with 10,000+ images using ResNet architecture. Flask web interface for real-time prediction.</div>
+        <div class="project-tech">
+          <span class="pt">Python</span><span class="pt">TensorFlow</span>
+          <span class="pt">OpenCV</span><span class="pt">ResNet</span>
+          <span class="pt">Flask</span><span class="pt">CNN</span>
+        </div>
+        <div class="project-links">
+          <span class="plink">⧉ Private Repo</span>
+        </div>
+      </div>
+      <div class="project-card fade-up">
+        <div class="project-num">03</div>
+        <div class="project-title">Sales Forecast System</div>
+        <div class="project-desc">Java-based sales forecasting application built as part of advanced software engineering practice. Implements data analysis patterns and predictive modeling fundamentals.</div>
+        <div class="project-tech">
+          <span class="pt">Java</span><span class="pt">Data Analysis</span>
+          <span class="pt">Forecasting</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/DikshitJalui12/sales-forecast" class="plink" target="_blank">⧉ GitHub →</a>
+        </div>
+      </div>
+      <div class="project-card fade-up">
+        <div class="project-num">04</div>
+        <div class="project-title">JPMC Forage MIDAS</div>
+        <div class="project-desc">Forked from JPMorgan Chase's Advanced Software Engineering Forage program. Implements financial-grade data interface systems, practicing industry software engineering workflows and code quality.</div>
+        <div class="project-tech">
+          <span class="pt">Java</span><span class="pt">JPMorgan</span>
+          <span class="pt">Software Engineering</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/DikshitJalui12/forage-midas" class="plink" target="_blank">⧉ GitHub →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="github">
+  <div class="section-wrap">
+    <div class="section-header fade-up">
+      <div class="section-tag">04 // GitHub</div>
+      <h2 class="section-title">Open Source<br>&amp; Repositories</h2>
+    </div>
+    <div class="repos-grid fade-up">
+      <a href="https://github.com/DikshitJalui12/Sentry-RAG" class="repo-card" target="_blank">
+        <div class="repo-name">📁 Sentry-RAG</div>
+        <div class="repo-desc">A Factual, Dual-Source LLM Assistant for Unmasking Covert Threats in Real-Time using Retrieval-Augmented Generation.</div>
+        <div class="repo-meta"><span class="repo-lang">JavaScript</span></div>
+      </a>
+      <a href="https://github.com/DikshitJalui12/forage-midas" class="repo-card" target="_blank">
+        <div class="repo-name">📁 forage-midas</div>
+        <div class="repo-desc">JPMC Advanced Software Engineering Forage program project repo — financial-grade software simulation.</div>
+        <div class="repo-meta"><span class="repo-lang">Java</span></div>
+      </a>
+      <a href="https://github.com/DikshitJalui12/sales-forecast" class="repo-card" target="_blank">
+        <div class="repo-name">📁 sales-forecast</div>
+        <div class="repo-desc">Sales forecasting system built with Java, applying data analysis and predictive modeling patterns.</div>
+        <div class="repo-meta"><span class="repo-lang">Java</span></div>
+      </a>
+      <a href="https://github.com/DikshitJalui12" class="repo-card" target="_blank">
+        <div class="repo-name">📁 DikshitJalui12</div>
+        <div class="repo-desc">Personal GitHub profile config with README — showcasing projects, skills, and professional details.</div>
+        <div class="repo-meta"><span class="repo-lang" style="color:var(--muted)">Markdown</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="certs">
+  <div class="section-wrap">
+    <div class="section-header fade-up">
+      <div class="section-tag">05 // Certifications</div>
+      <h2 class="section-title">Credentials &amp;<br>Achievements</h2>
+    </div>
+    <div class="certs-grid fade-up">
+      <div class="cert-card">
+        <div class="cert-badge">VERIFIED</div>
+        <div class="cert-logo">☁️</div>
+        <div class="cert-name">AWS Cloud Practitioner Essentials</div>
+        <div class="cert-org">Amazon Web Services</div>
+        <div class="cert-year">2025</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-badge">VERIFIED</div>
+        <div class="cert-logo">🏛️</div>
+        <div class="cert-name">Oracle Cloud Infrastructure Foundations</div>
+        <div class="cert-org">Oracle</div>
+        <div class="cert-year">2025</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-badge">VERIFIED</div>
+        <div class="cert-logo">🏦</div>
+        <div class="cert-name">Software Engineering Virtual Experience</div>
+        <div class="cert-org">JP Morgan Chase &amp; Co.</div>
+        <div class="cert-year">2025</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-badge">VERIFIED</div>
+        <div class="cert-logo">💻</div>
+        <div class="cert-name">Java &amp; Python Certification</div>
+        <div class="cert-org">Coincent</div>
+        <div class="cert-year">2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-wrap">
+    <div class="section-header fade-up">
+      <div class="section-tag">06 // Education</div>
+      <h2 class="section-title">Academic<br>Foundation</h2>
+    </div>
+    <div class="edu-card fade-up">
+      <div>
+        <div class="edu-inst">Institute of Aeronautical Engineering</div>
+        <div class="edu-degree">B.Tech — Artificial Intelligence &amp; Machine Learning</div>
+        <div class="edu-duration">Sep 2024 – Jul 2028 (expected) · Hyderabad, India</div>
+        <div class="coursework">
+          <span class="course">Data Structures &amp; Algorithms</span>
+          <span class="course">Machine Learning</span>
+          <span class="course">Natural Language Processing</span>
+          <span class="course">Database Management Systems</span>
+          <span class="course">Software Engineering</span>
+          <span class="course">Web Systems Engineering</span>
+        </div>
+      </div>
+      <div>
+        <div class="edu-cgpa">9.03</div>
+        <div class="edu-cgpa-label">CGPA (till Sem III)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-header fade-up">
+      <div class="section-tag">07 // Contact</div>
+      <h2 class="section-title">Let's Build<br>Something Together</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-links fade-up">
+        <a href="mailto:dikshitjalui03@gmail.com" class="contact-item">
+          <div class="contact-icon">✉</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value">dikshitjalui03@gmail.com</div>
+          </div>
+        </a>
+        <a href="tel:+917416231423" class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-value">+91-7416231423</div>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/dikshit-kumar-jalui-528949323" class="contact-item" target="_blank">
+          <div class="contact-icon">💼</div>
+          <div>
+            <div class="contact-label">LinkedIn</div>
+            <div class="contact-value">dikshit-kumar-jalui</div>
+          </div>
+        </a>
+        <a href="https://github.com/DikshitJalui12" class="contact-item" target="_blank">
+          <div class="contact-icon">⌨</div>
+          <div>
+            <div class="contact-label">GitHub</div>
+            <div class="contact-value">DikshitJalui12</div>
+          </div>
+        </a>
+        <div class="contact-item" style="cursor:default;">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Location</div>
+            <div class="contact-value">Hyderabad, Telangana, India</div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-cta fade-up">
+        <div class="cta-text">
+          Currently pursuing B.Tech in <span>AI/ML at IARE</span> and open to<br>
+          <span>internship opportunities, research collaborations,</span><br>
+          and exciting projects in AI, ML, and design.
+        </div>
+        <form action="https://api.web3forms.com/submit" method="POST" class="contact-form" style="display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 400px;">
+          
+          <input type="hidden" name="access_key" value="9e714da6-8c63-4b7c-87ef-a8ca7cee7a2b">
+
+          <input type="text" name="name" placeholder="Your Name" required style="padding: 0.8rem; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'Fira Code', monospace; font-size: 0.8rem;">
+          
+          <input type="email" name="email" placeholder="Your Email" required style="padding: 0.8rem; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'Fira Code', monospace; font-size: 0.8rem;">
+          
+          <textarea name="message" placeholder="Your Message" rows="4" required style="padding: 0.8rem; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'Fira Code', monospace; font-size: 0.8rem; resize: vertical;"></textarea>
+          
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+          <button type="submit" class="btn-primary" style="width: fit-content;">Send Message →</button>
+        </form> 
+      <button class="btn-resume-hero" onclick="openResume()" style="width:fit-content">⎙ View Resume</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-text">© 2026 <span>Dikshit Kumar Jalui</span>. Crafted with precision.</div>
+  <div class="footer-status"><div class="status-dot"></div>Open to opportunities</div>
+  <div class="footer-text">Hyderabad, IN · <span>IARE 2028</span></div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>
