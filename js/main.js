@@ -22,8 +22,8 @@ document.addEventListener('mouseup', () => isDragging = false);
 
 // Smooth Follow for Ring
 function lerp() {
-  rx += (mx - rx) * 0.35;
-  ry += (my - ry) * 0.35;
+  rx += (mx - rx) * 0.55;
+  ry += (my - ry) * 0.55;
   ring.style.left = rx + 'px';
   ring.style.top = ry + 'px';
   requestAnimationFrame(lerp);
