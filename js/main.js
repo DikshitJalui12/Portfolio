@@ -400,7 +400,3 @@ async function fetchLiveCodingStats() {
 
 // Run the fetcher immediately when the page loads
 fetchLiveCodingStats();
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.3);
-}
