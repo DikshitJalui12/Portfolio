@@ -328,12 +328,78 @@ function playTechSound(waveType, frequency) {
   osc.type = waveType; // 'sine', 'square', 'sawtooth', 'triangle'
   osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
 
-  // Quick fade out to make it sound like a UI "blip"
-  gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  // LOUDER VOLUME SETTING (0.4 instead of 0.1)
+  gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+  // Fades out to near-silence over 0.3 seconds to create the "blip" effect
   gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
 
   osc.connect(gainNode);
   gainNode.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.3);
+}
+
+  /* ===== LIVE CODING STATS FETCHER ===== */
+async function fetchLiveCodingStats() {
+  // --- IMPORTANT: REPLACE THESE WITH YOUR EXACT USERNAMES ---
+  const usernames = {
+    leetcode: 'Dikshit_Jalui_12', 
+    codechef: 'dikshitjalui12',
+    gfg: 'dikshitj0i8o', 
+    hackerrank: 'dikshitjalui03' // <-- HACKERRANK ADDED HERE
+  };
+
+  // 1. Fetch LeetCode Data (Using a highly stable open-source wrapper)
+  try {
+    const lcResponse = await fetch(`https://leetcode-stats-api.herokuapp.com/${usernames.leetcode}`);
+    const lcData = await lcResponse.json();
+    if (lcData.status === "success") {
+      document.getElementById('lc-stat').innerText = lcData.totalSolved;
+    } else {
+      document.getElementById('lc-stat').innerText = "Err";
+    }
+  } catch (error) {
+    document.getElementById('lc-stat').innerText = "N/A";
+  }
+
+  // 2. Fetch CodeChef Data
+  try {
+    const ccResponse = await fetch(`https://codechef-api.vercel.app/handle/${usernames.codechef}`);
+    const ccData = await ccResponse.json();
+    if (ccData.success) {
+      document.getElementById('cc-stat').innerText = ccData.stars;
+    } else {
+      document.getElementById('cc-stat').innerText = "Err";
+    }
+  } catch (error) {
+    document.getElementById('cc-stat').innerText = "N/A";
+  }
+
+  // 3. Fetch HackerRank Data 
+  try {
+    // Note: Free HackerRank APIs are often community-hosted and can be blocked by CORS.
+    // If it fails, it will safely drop to the 'catch' block below.
+    const hrResponse = await fetch(`https://hackerrank-api.vercel.app/api/user/${usernames.hackerrank}`);
+    if (hrResponse.ok) {
+      const hrData = await hrResponse.json();
+      // Assuming the API returns a 'badges' or similar count. Adjust if necessary.
+      document.getElementById('hr-stat').innerText = hrData.badges || "5★"; 
+    } else {
+      throw new Error("HR API blocked or unavailable");
+    }
+  } catch (error) {
+    // Fallback hardcoded value if the API blocks the request
+    document.getElementById('hr-stat').innerText = "5★"; // Manually update this if the API is down
+  }
+
+  // 4. GeeksforGeeks Data (No stable public API available)
+  // Fallback hardcoded value:
+  document.getElementById('gfg-stat').innerText = "400"; // Manually update your GFG score here
+}
+
+// Run the fetcher immediately when the page loads
+fetchLiveCodingStats();
 
   osc.start();
   osc.stop(audioCtx.currentTime + 0.3);
