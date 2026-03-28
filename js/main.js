@@ -329,7 +329,7 @@ function playTechSound(waveType, frequency) {
   osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
 
   // LOUDER VOLUME SETTING (0.4 instead of 0.1)
-  gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+  gainNode.gain.setValueAtTime(0.7, audioCtx.currentTime);
   // Fades out to near-silence over 0.3 seconds to create the "blip" effect
   gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
 
@@ -337,7 +337,7 @@ function playTechSound(waveType, frequency) {
   gainNode.connect(audioCtx.destination);
 
   osc.start();
-  osc.stop(audioCtx.currentTime + 0.3);
+  osc.stop(audioCtx.currentTime + 0.5);
 }
 
   /* ===== LIVE CODING STATS FETCHER ===== */
@@ -360,7 +360,7 @@ async function fetchLiveCodingStats() {
       document.getElementById('lc-stat').innerText = "Err";
     }
   } catch (error) {
-    document.getElementById('lc-stat').innerText = "N/A";
+    document.getElementById('lc-stat').innerText = "190";
   }
 
   // 2. Fetch CodeChef Data
@@ -373,7 +373,7 @@ async function fetchLiveCodingStats() {
       document.getElementById('cc-stat').innerText = "Err";
     }
   } catch (error) {
-    document.getElementById('cc-stat').innerText = "N/A";
+    document.getElementById('cc-stat').innerText = "56";
   }
 
   // 3. Fetch HackerRank Data 
@@ -384,18 +384,18 @@ async function fetchLiveCodingStats() {
     if (hrResponse.ok) {
       const hrData = await hrResponse.json();
       // Assuming the API returns a 'badges' or similar count. Adjust if necessary.
-      document.getElementById('hr-stat').innerText = hrData.badges || "5★"; 
+      document.getElementById('hr-stat').innerText = hrData.badges || "2"; 
     } else {
       throw new Error("HR API blocked or unavailable");
     }
   } catch (error) {
     // Fallback hardcoded value if the API blocks the request
-    document.getElementById('hr-stat').innerText = "5★"; // Manually update this if the API is down
+    document.getElementById('hr-stat').innerText = "2"; // Manually update this if the API is down
   }
 
   // 4. GeeksforGeeks Data (No stable public API available)
   // Fallback hardcoded value:
-  document.getElementById('gfg-stat').innerText = "400"; // Manually update your GFG score here
+  document.getElementById('gfg-stat').innerText = "1033"; // Manually update your GFG score here
 }
 
 // Run the fetcher immediately when the page loads
