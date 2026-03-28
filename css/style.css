@@ -1022,21 +1022,6 @@ footer {
 /* ===== TYPEWRITER ===== */
 .typewriter { border-right: 2px solid var(--accent); white-space: nowrap; overflow: hidden; }
 
-@media (max-width: 900px) {
-  #hero { grid-template-columns: 1fr; padding: 5rem 2rem 3rem; text-align: center; }
-  .hero-right { display: none; }
-  .section-wrap { padding: 4rem 2rem; }
-  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
-  nav { padding: 1rem 1.5rem; }
-  .nav-links { gap: 1rem; }
-  .btn-resume-nav { display: none; }
-  footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
-  .edu-card { grid-template-columns: 1fr; }
-  .resume-skills-grid { grid-template-columns: 1fr; }
-  .resume-cert-grid { grid-template-columns: 1fr; }
-  .hero-ctas { justify-content: center; }
-}
-
 /* ===== 3D CODING CUBES ===== */
 #coding-profiles { background: transparent; }
 .cubes-grid {
@@ -1080,3 +1065,18 @@ footer {
 /* Back Face Stats Text */
 .cube-back .stat-val { font-size: 1.8rem; font-weight: 800; color: var(--text); }
 .cube-back .stat-label { font-family: 'Fira Code', monospace; font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+
+@media (max-width: 900px) {
+  #hero { grid-template-columns: 1fr; padding: 5rem 2rem 3rem; text-align: center; }
+  .hero-right { display: none; }
+  .section-wrap { padding: 4rem 2rem; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1rem; }
+  .btn-resume-nav { display: none; }
+  footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  .edu-card { grid-template-columns: 1fr; }
+  .resume-skills-grid { grid-template-columns: 1fr; }
+  .resume-cert-grid { grid-template-columns: 1fr; }
+  .hero-ctas { justify-content: center; }
+}
