@@ -312,3 +312,29 @@ const statObs = new IntersectionObserver(entries=>entries.forEach(e=>{
 }),{threshold:0.5});
 const statsEl = document.querySelector('.hero-stats');
 if(statsEl) statObs.observe(statsEl);
+
+/* ===== SYNTHESIZED TECH UI SOUNDS ===== */
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function playTechSound(waveType, frequency) {
+  // Initialize on first click to bypass browser auto-play blocks
+  if (!audioCtx) { audioCtx = new AudioContext(); }
+  if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+
+  const osc = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+
+  osc.type = waveType; // 'sine', 'square', 'sawtooth', 'triangle'
+  osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+  // Quick fade out to make it sound like a UI "blip"
+  gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+
+  osc.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.3);
+}
